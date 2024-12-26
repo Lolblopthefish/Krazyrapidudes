@@ -1,0 +1,135 @@
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+local button = Instance.new("TextButton", screenGui)
+
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Position = UDim2.new(0.82, 0, 0.2, 0) -- Position the button at 20% from the top (80% higher)
+button.Text = "OFF"
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Red (off)
+button.BorderSizePixel = 0
+button.TextScaled = true
+button.Font = Enum.Font.SourceSans
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.AnchorPoint = Vector2.new(0.5, 0.5)
+button.Draggable = true
+
+local isOn = false
+
+local function closest()
+    local range = 65
+    local target = nil
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= player and v.Character and not v.Character:FindFirstChildWhichIsA("ForceField") then
+            local JN = v.Character:FindFirstChild("HumanoidRootPart")
+            local JNR = v.Character:FindFirstChildOfClass("Humanoid")
+            if JN and JNR.Health > 3 then
+                local dist = (player.Character.HumanoidRootPart.Position - JN.Position).magnitude
+                if dist < range then
+                    range = dist
+                    target = v.Character
+                end
+            end
+        end
+    end
+    return target
+end
+
+local function execute()
+    while isOn do
+        local vh = closest()
+
+        if vh and vh:FindFirstChild("UpperTorso") then
+            local vroot = vh:FindFirstChild("UpperTorso")
+            local args = {
+                [1] = 1,
+                [2] = vh,
+                [3] = 50,
+                [4] = vroot
+            }
+
+            game:GetService("ReplicatedStorage").MainEvents.PUNCHEVENT:FireServer(unpack(args))
+        end
+
+        -- Add a 0.001-second delay between punches
+        task.wait(0.001)
+    end
+end
+
+button.MouseButton1Click:Connect(function()
+    isOn = not isOn
+    if isOn then
+        button.Text = "ON"
+        button.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green
+        task.spawn(execute) -- Run the function
+    else
+        button.Text = "OFF"
+        button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Red
+    end
+end)local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+local button = Instance.new("TextButton", screenGui)
+
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Position = UDim2.new(0.82, 0, 0.2, 0) -- Position the button at 20% from the top (80% higher)
+button.Text = "OFF"
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Red (off)
+button.BorderSizePixel = 0
+button.TextScaled = true
+button.Font = Enum.Font.SourceSans
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.AnchorPoint = Vector2.new(0.5, 0.5)
+button.Draggable = true
+
+local isOn = false
+
+local function closest()
+    local range = 65
+    local target = nil
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= player and v.Character and not v.Character:FindFirstChildWhichIsA("ForceField") then
+            local JN = v.Character:FindFirstChild("HumanoidRootPart")
+            local JNR = v.Character:FindFirstChildOfClass("Humanoid")
+            if JN and JNR.Health > 3 then
+                local dist = (player.Character.HumanoidRootPart.Position - JN.Position).magnitude
+                if dist < range then
+                    range = dist
+                    target = v.Character
+                end
+            end
+        end
+    end
+    return target
+end
+
+local function execute()
+    while isOn do
+        local vh = closest()
+
+        if vh and vh:FindFirstChild("UpperTorso") then
+            local vroot = vh:FindFirstChild("UpperTorso")
+            local args = {
+                [1] = 1,
+                [2] = vh,
+                [3] = 50,
+                [4] = vroot
+            }
+
+            game:GetService("ReplicatedStorage").MainEvents.PUNCHEVENT:FireServer(unpack(args))
+        end
+
+        -- Add a 0.001-second delay between punches
+        task.wait(0.001)
+    end
+end
+
+button.MouseButton1Click:Connect(function()
+    isOn = not isOn
+    if isOn then
+        button.Text = "ON"
+        button.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green
+        task.spawn(execute) -- Run the function
+    else
+        button.Text = "OFF"
+        button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Red
+    end
+end
